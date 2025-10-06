@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitCheck - Your Style Assistant</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* Body & Background */
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at 30% 30%, #0b0c1c, #000);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+header {
+  background: rgba(0,0,0,0.85);
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  border-bottom: 2px solid #4a00e0;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: center;
+  background: rgba(0,0,0,0.7);
+  flex-wrap: wrap;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+nav button {
+  flex: 1 1 22%;
+  margin: 5px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 1em;
+  color: #fff;
+  background: linear-gradient(120deg, #1f005c, #4a00e0);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s all;
+}
+nav button.active {
+  box-shadow: 0 0 15px #4a00e0, 0 0 30px #8e2de2;
+  transform: scale(1.05);
+}
+nav button:hover { opacity: 0.9; }
+
+/* Sections */
+section {
+  display: none;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: rgba(10,10,30,0.85);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+}
+section.active { display: block; }
+
+/* Cards */
+.card {
+  background: rgba(30,30,50,0.9);
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(74,0,224,0.7);
+}
+.card img {
+  max-width: 100%;
+  border-radius: 12px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Inputs & Buttons */
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 15px 0;
+  border-radius: 12px;
+  border: 1px solid #555;
+  background: rgba(30,30,50,0.8);
+  color: #fff;
+  font-size: 14px;
+}
+input:focus, select:focus { outline: 2px solid #4a00e0; }
+label { font-weight: 600; margin-bottom: 5px; display:block; }
+
+/* Bold helper */
+.bold { font-weight:700; }
+
+/* User Modal */
+#userModal {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.95);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+}
+#userModal.show {
+  opacity:1;
+  pointer-events:auto;
+}
+#userModal .card {
+  max-width:450px;
+  width:90%;
+  text-align:center;
+  padding:25px;
+  border-radius:15px;
+  background: rgba(20,20,40,0.95);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+#userModal .card button { cursor:pointer; }
+
+/* Filter button groups */
+.filter-group { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px; }
+.filter-group button { flex:1; transition: all 0.3s ease; }
+.filter-group button.active { background: linear-gradient(120deg,#4a00e0,#8e2de2); transform: scale(1.05); }
+
+/* Responsive */
+@media(max-width:1024px){ nav button { flex:1 1 45%; margin:3px; font-size:0.95em; } }
+@media(max-width:768px){ nav button { flex:1 1 100%; margin:3px; font-size:0.9em; } section { padding:15px; margin:10px; } input, select, button { font-size:13px; padding:10px; } }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+
+</head>
+<body>
+
+<header>FitCheck</header>
+
+<nav>
+  <button id="tabCloset" class="active">My Closet</button>
+  <button id="tabGenerator">Today's Outfit</button>
+  <button id="tabUpload">Upload Clothes</button>
+</nav>
+
+<div id="userModal">
+  <div class="card">
+    <h2>Welcome to FitCheck!</h2>
+    <p class="bold">Upload the following to start:</p>
+    <ul style="text-align:left;">
+      <li>3 Tops</li>
+      <li>3 Bottoms</li>
+      <li>1 Pair of Shoes</li>
+    </ul>
+    <button id="startUpload">Start Uploading</button>
+  </div>
+</div>
+
+<section id="closetSection" class="active">
+  <h2 class="bold">My Closet</h2>
+  <p id="closetCounter"></p>
+  <div id="myClosetList"></div>
+</section>
+
+<section id="generatorSection">
+  <h2 class="bold">Today's Outfit</h2>
+  <div id="fitResult"></div>
+  <button id="rerollFit">Reroll Outfit</button>
+</section>
+
+<section id="uploadSection">
+  <h2 class="bold">Add to Your Closet</h2>
+  <label for="clothesImage">Clothes Image</label>
+  <input type="file" id="clothesImage">
+  <label for="clothesName">Item Name</label>
+  <input type="text" id="clothesName">
+
+  <label>Style</label>
+  <div id="styleButtons" class="filter-group">
+    <button type="button" data-value="Casual">Casual</button>
+    <button type="button" data-value="Formal">Formal</button>
+    <button type="button" data-value="Sporty">Sporty</button>
+    <button type="button" data-value="Streetwear">Streetwear</button>
+    <button type="button" data-value="Party">Party</button>
+  </div>
+
+  <label>Occasion</label>
+  <div id="occasionButtons" class="filter-group">
+    <button type="button" data-value="Work">Work</button>
+    <button type="button" data-value="School">School</button>
+    <button type="button" data-value="Gym">Gym</button>
+    <button type="button" data-value="Casual Outing">Casual Outing</button>
+    <button type="button" data-value="Night Out">Night Out</button>
+  </div>
+
+  <button id="saveClothes">Add Item</button>
+  <div id="uploadClothesList"></div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// Tabs
+const tabs = { 'tabCloset':'closetSection','tabGenerator':'generatorSection','tabUpload':'uploadSection' };
+for(const t in tabs){
+  $(t).addEventListener('click', ()=>{
+    for(const x in tabs){ $(tabs[x]).classList.remove('active'); $(x).classList.remove('active'); }
+    $(tabs[t]).classList.add('active');
+    $(t).classList.add('active');
+  });
+}
+
+// User Modal
+const modal = $('userModal');
+if(!localStorage.getItem('fitcheck_clothes')) modal.classList.add('show');
+$('startUpload').addEventListener('click', ()=>{ modal.classList.remove('show'); $('tabUpload').click(); });
+
+// Closet & Upload
+const CLOTHES_KEY='fitcheck_clothes';
+let clothes = JSON.parse(localStorage.getItem(CLOTHES_KEY)||'[]');
+let selectedStyles=[], selectedOccasions=[];
+
+// Style & Occasion buttons
+document.querySelectorAll('#styleButtons button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    btn.classList.toggle('active');
+    const val=btn.dataset.value;
+    selectedStyles.includes(val)? selectedStyles=selectedStyles.filter(v=>v!==val):selectedStyles.push(val);
+  });
+});
+document.querySelectorAll('#occasionButtons button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    btn.classList.toggle('active');
+    const val=btn.dataset.value;
+    selectedOccasions.includes(val)? selectedOccasions=selectedOccasions.filter(v=>v!==val):selectedOccasions.push(val);
+  });
+});
+
+// Display Closet
+function displayMyCloset(){
+  $('myClosetList').innerHTML='';
+  clothes.forEach((c,i)=>{
+    const card=document.createElement('div');
+    card.className='card';
+    const overused = (c.worn||0) >=5;
+    card.style.opacity= overused?0.6:1;
+    card.innerHTML=`
+      ${c.img?'<img src="'+c.img+'">':''}
+      <strong>${c.name}</strong> - ${c.color||''} - ${c.type||''}<br>
+      Style: ${c.style||''}<br>Occasion: ${c.occasion||''}<br>
+      Worn: ${c.worn||0} times
+      <br><button onclick="removeClothes(${i})">Remove</button>
+    `;
+    $('myClosetList').appendChild(card);
+  });
+  $('closetCounter').textContent=`Total items: ${clothes.length}`;
+}
+
+// Remove item
+function removeClothes(i){
+  clothes.splice(i,1);
+  localStorage.setItem(CLOTHES_KEY, JSON.stringify(clothes));
+  displayMyCloset();
+}
+
+// Add item
+$('saveClothes').addEventListener('click',()=>{
+  const img = $('clothesImage').files[0];
+  const name = $('clothesName').value.trim();
+  if(!name){ alert('Enter item name'); return; }
+  if(selectedStyles.length===0){ alert('Select at least one style'); return; }
+  if(selectedOccasions.length===0){ alert('Select at least one occasion'); return; }
+
+  const reader = new FileReader();
+  reader.onload=function(e){
+    const newItem={
+      img:e.target.result, name,
+      style:selectedStyles.join(','), occasion:selectedOccasions.join(','),
+      type:'top', color:'', worn:0
+    };
+    clothes.push(newItem);
+    localStorage.setItem(CLOTHES_KEY, JSON.stringify(clothes));
+    displayMyCloset();
+    $('clothesName').value=''; $('clothesImage').value='';
+    selectedStyles=[]; selectedOccasions=[];
+    document.querySelectorAll('#styleButtons button, #occasionButtons button').forEach(b=>b.classList.remove('active'));
+    generateFit();
+  }
+  if(img) reader.readAsDataURL(img);
+});
+
+// Fit Generator
+function colorDistance(c1,c2){ // simple Euclidean for RGB
+  const rgb1=c1.match(/\d+/g)?.map(Number)||[0,0,0];
+  const rgb2=c2.match(/\d+/g)?.map(Number)||[0,0,0];
+  return Math.sqrt((rgb1[0]-rgb2[0])**2+(rgb1[1]-rgb2[1])**2+(rgb1[2]-rgb2[2])**2);
+}
+
+function generateFit(){
+  const tops = clothes.filter(c=>c.type==='top');
+  const bottoms = clothes.filter(c=>c.type==='bottom');
+  const shoes = clothes.filter(c=>c.type==='shoes');
+  if(!tops.length || !bottoms.length || !shoes.length){
+    $('fitResult').innerHTML='<p>Add tops, bottoms, and shoes for fit.</p>';
+    return;
+  }
+
+  function scoreItem(item){
+    let score= Math.max(0,5-(item.worn||0));
+    selectedStyles.forEach(s=>{ if(item.style?.includes(s)) score+=3; });
+    selectedOccasions.forEach(o=>{ if(item.occasion?.includes(o)) score+=2; });
+    return score;
+  }
+
+  const scoredTops = tops.map(t=>({...t, score:scoreItem(t)})).sort((a,b)=>b.score-a.score);
+  const scoredBottoms = bottoms.map(b=>({...b, score:scoreItem(b)})).sort((a,b)=>b.score-a.score);
+  const scoredShoes = shoes.map(s=>({...s, score:scoreItem(s)})).sort((a,b)=>b.score-a.score);
+
+  const chosenTop = scoredTops[Math.floor(Math.random()*Math.min(2,scoredTops.length))];
+  const chosenBottom = scoredBottoms[Math.floor(Math.random()*Math.min(2,scoredBottoms.length))];
+  const chosenShoe = scoredShoes[Math.floor(Math.random()*Math.min(2,scoredShoes.length))];
+
+  [chosenTop,chosenBottom,chosenShoe].forEach(i=>i.worn=(i.worn||0)+1);
+  localStorage.setItem(CLOTHES_KEY, JSON.stringify(clothes));
+
+  $('fitResult').innerHTML=`<div class="card">
+    ${chosenTop.img?'<img src="'+chosenTop.img+'">':''}<strong>${chosenTop.name}</strong><br>
+    ${chosenBottom.img?'<img src="'+chosenBottom.img+'">':''}<strong>${chosenBottom.name}</strong><br>
+    ${chosenShoe.img?'<img src="'+chosenShoe.img+'">':''}<strong>${chosenShoe.name}</strong>
+  </div>`;
+  displayMyCloset();
+}
+
+$('rerollFit').addEventListener('click', generateFit);
+
+// Weekly wash reminder
+if(!localStorage.getItem('lastWash')){
+  localStorage.setItem('lastWash', Date.now());
+}else{
+  const last = parseInt(localStorage.getItem('lastWash'));
+  const now = Date.now();
+  if(now - last > 7*24*60*60*1000) alert('Reminder: Wash your clothes this week!');
+}
+
+// Initial load
+displayMyCloset();
+generateFit();
+</script>
+
+</body>
+</html>
