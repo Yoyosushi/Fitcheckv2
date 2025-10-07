@@ -3,147 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FitCheck - Your Style Assistant</title>
+<title>FitCheck - Your Personal Style Assistant</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-/* Body & Background */
 body {
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-  background: radial-gradient(circle at 30% 30%, #0b0c1c, #000);
-  color: #fff;
-  transition: all 0.3s ease;
+  margin:0; font-family:'Montserrat',sans-serif;
+  background: radial-gradient(circle at 20% 20%, #0b0c1c, #000);
+  color:#fff; transition:0.3s ease;
 }
-
-/* Header */
 header {
-  background: rgba(0,0,0,0.85);
-  padding: 20px 10px;
-  text-align: center;
-  font-size: 2em;
-  font-weight: 700;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.7);
-  border-bottom: 2px solid #4a00e0;
+  background: rgba(0,0,0,0.85); padding: 20px;
+  text-align:center; font-size:2em; font-weight:700;
+  letter-spacing:1px; box-shadow:0 4px 12px rgba(0,0,0,0.7);
+  border-bottom:2px solid #4a00e0;
 }
-
-/* Navigation */
 nav {
-  display: flex;
-  justify-content: center;
-  background: rgba(0,0,0,0.7);
-  flex-wrap: wrap;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  display:flex; justify-content:center; background: rgba(0,0,0,0.7);
+  flex-wrap:wrap; box-shadow:0 4px 8px rgba(0,0,0,0.5);
 }
 nav button {
-  flex: 1 1 22%;
-  margin: 5px;
-  padding: 12px;
-  font-weight: 700;
-  font-size: 1em;
-  color: #fff;
-  background: linear-gradient(120deg, #1f005c, #4a00e0);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s all;
+  flex:1 1 22%; margin:5px; padding:12px;
+  font-weight:700; font-size:1em; color:#fff;
+  background:linear-gradient(120deg,#1f005c,#4a00e0);
+  border:none; border-radius:12px; cursor:pointer;
+  transition:0.3s all;
 }
 nav button.active {
-  box-shadow: 0 0 15px #4a00e0, 0 0 30px #8e2de2;
-  transform: scale(1.05);
+  box-shadow:0 0 15px #4a00e0,0 0 30px #8e2de2;
+  transform:scale(1.05);
 }
-nav button:hover { opacity: 0.9; }
-
-/* Sections */
+nav button:hover { opacity:0.9; }
 section {
-  display: none;
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 20px;
-  background: rgba(10,10,30,0.85);
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+  display:none; max-width:1000px; margin:20px auto; padding:20px;
+  background: rgba(10,10,30,0.85); border-radius:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.7);
 }
-section.active { display: block; }
-
-/* Cards */
+section.active { display:block; }
 .card {
-  background: rgba(30,30,50,0.9);
-  border-radius: 15px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
-  transition: transform 0.3s, box-shadow 0.3s;
+  background: rgba(30,30,50,0.9); border-radius:15px; padding:15px;
+  margin-bottom:20px; box-shadow:0 6px 20px rgba(0,0,0,0.7);
+  transition: transform 0.4s, box-shadow 0.4s;
 }
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(74,0,224,0.7);
+  transform: scale(1.05); box-shadow:0 0 25px #8e2de2,0 0 40px #4a00e0;
 }
-.card img {
-  max-width: 100%;
-  border-radius: 12px;
-  display: block;
-  margin-bottom: 10px;
+.card img { max-width:100%; border-radius:12px; display:block; margin-bottom:10px; }
+input, button {
+  width:100%; padding:12px; margin:8px 0 15px 0;
+  border-radius:12px; border:1px solid #555;
+  background: rgba(30,30,50,0.8); color:#fff; font-size:14px;
 }
-
-/* Inputs & Buttons */
-input, select, button {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0 15px 0;
-  border-radius: 12px;
-  border: 1px solid #555;
-  background: rgba(30,30,50,0.8);
-  color: #fff;
-  font-size: 14px;
-}
-input:focus, select:focus { outline: 2px solid #4a00e0; }
-label { font-weight: 600; margin-bottom: 5px; display:block; }
-
-/* Bold helper */
+input:focus { outline:2px solid #4a00e0; }
+label { font-weight:600; margin-bottom:5px; display:block; }
 .bold { font-weight:700; }
 
-/* User Modal */
 #userModal {
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.95);
-  display:flex; align-items:center; justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition: opacity 0.4s ease;
-  z-index: 9999;
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.95); display:flex;
+  align-items:center; justify-content:center; opacity:0;
+  pointer-events:none; transition:opacity 0.4s ease; z-index:9999;
 }
-#userModal.show {
-  opacity:1;
-  pointer-events:auto;
-}
+#userModal.show { opacity:1; pointer-events:auto; }
 #userModal .card {
-  max-width:450px;
-  width:90%;
-  text-align:center;
-  padding:25px;
-  border-radius:15px;
-  background: rgba(20,20,40,0.95);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  max-width:450px; width:90%; text-align:center;
+  padding:25px; border-radius:15px; background: rgba(20,20,40,0.95);
+  box-shadow:0 10px 30px rgba(0,0,0,0.8);
 }
 #userModal .card button { cursor:pointer; }
 
-/* Filter button groups */
-.filter-group { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px; }
-.filter-group button { flex:1; transition: all 0.3s ease; }
-.filter-group button.active { background: linear-gradient(120deg,#4a00e0,#8e2de2); transform: scale(1.05); }
-
-/* Responsive */
-@media(max-width:1024px){ nav button { flex:1 1 45%; margin:3px; font-size:0.95em; } }
-@media(max-width:768px){ nav button { flex:1 1 100%; margin:3px; font-size:0.9em; } section { padding:15px; margin:10px; } input, select, button { font-size:13px; padding:10px; } }
+@media(max-width:1024px){
+  nav button { flex:1 1 45%; margin:3px; font-size:0.95em; }
+}
+@media(max-width:768px){
+  nav button { flex:1 1 100%; margin:3px; font-size:0.9em; }
+  section { padding:15px; margin:10px; }
+  input, button { font-size:13px; padding:10px; }
+}
 </style>
-
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
-
 </head>
 <body>
 
@@ -158,12 +97,7 @@ label { font-weight: 600; margin-bottom: 5px; display:block; }
 <div id="userModal">
   <div class="card">
     <h2>Welcome to FitCheck!</h2>
-    <p class="bold">Upload the following to start:</p>
-    <ul style="text-align:left;">
-      <li>3 Tops</li>
-      <li>3 Bottoms</li>
-      <li>1 Pair of Shoes</li>
-    </ul>
+    <p class="bold">Upload 3 Tops, 3 Bottoms, and 1 Pair of Shoes to start.</p>
     <button id="startUpload">Start Uploading</button>
   </div>
 </div>
@@ -182,181 +116,165 @@ label { font-weight: 600; margin-bottom: 5px; display:block; }
 
 <section id="uploadSection">
   <h2 class="bold">Add to Your Closet</h2>
-  <label for="clothesImage">Clothes Image</label>
-  <input type="file" id="clothesImage">
-  <label for="clothesName">Item Name</label>
-  <input type="text" id="clothesName">
-
-  <label>Style</label>
-  <div id="styleButtons" class="filter-group">
-    <button type="button" data-value="Casual">Casual</button>
-    <button type="button" data-value="Formal">Formal</button>
-    <button type="button" data-value="Sporty">Sporty</button>
-    <button type="button" data-value="Streetwear">Streetwear</button>
-    <button type="button" data-value="Party">Party</button>
-  </div>
-
-  <label>Occasion</label>
-  <div id="occasionButtons" class="filter-group">
-    <button type="button" data-value="Work">Work</button>
-    <button type="button" data-value="School">School</button>
-    <button type="button" data-value="Gym">Gym</button>
-    <button type="button" data-value="Casual Outing">Casual Outing</button>
-    <button type="button" data-value="Night Out">Night Out</button>
-  </div>
-
-  <button id="saveClothes">Add Item</button>
+  <form id="uploadForm">
+    <label for="clothesImage">Clothes Image</label>
+    <input type="file" id="clothesImage" accept="image/*">
+    <label for="clothesName">Item Name</label>
+    <input type="text" id="clothesName">
+    <button type="submit">Add Item</button>
+  </form>
   <div id="uploadClothesList"></div>
 </section>
 
 <script>
 const $ = id => document.getElementById(id);
-
-// Tabs
 const tabs = { 'tabCloset':'closetSection','tabGenerator':'generatorSection','tabUpload':'uploadSection' };
 for(const t in tabs){
   $(t).addEventListener('click', ()=>{
     for(const x in tabs){ $(tabs[x]).classList.remove('active'); $(x).classList.remove('active'); }
-    $(tabs[t]).classList.add('active');
-    $(t).classList.add('active');
+    $(tabs[t]).classList.add('active'); $(t).classList.add('active');
   });
 }
 
-// User Modal
+// User modal
 const modal = $('userModal');
 if(!localStorage.getItem('fitcheck_clothes')) modal.classList.add('show');
 $('startUpload').addEventListener('click', ()=>{ modal.classList.remove('show'); $('tabUpload').click(); });
 
-// Closet & Upload
+// Weekly wash reminder
+function checkWashReminder() {
+  const lastDate = localStorage.getItem('lastWashDate');
+  const today = new Date();
+  if(!lastDate || (today - new Date(lastDate)) / (1000*60*60*24) >= 7) {
+    alert("Reminder: It's been a week! Wash your clothes to keep your outfits fresh!");
+    localStorage.setItem('lastWashDate', today);
+  }
+}
+checkWashReminder();
+
+// Closet management
 const CLOTHES_KEY='fitcheck_clothes';
 let clothes = JSON.parse(localStorage.getItem(CLOTHES_KEY)||'[]');
-let selectedStyles=[], selectedOccasions=[];
-
-// Style & Occasion buttons
-document.querySelectorAll('#styleButtons button').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    btn.classList.toggle('active');
-    const val=btn.dataset.value;
-    selectedStyles.includes(val)? selectedStyles=selectedStyles.filter(v=>v!==val):selectedStyles.push(val);
-  });
-});
-document.querySelectorAll('#occasionButtons button').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    btn.classList.toggle('active');
-    const val=btn.dataset.value;
-    selectedOccasions.includes(val)? selectedOccasions=selectedOccasions.filter(v=>v!==val):selectedOccasions.push(val);
-  });
-});
-
-// Display Closet
-function displayMyCloset(){
-  $('myClosetList').innerHTML='';
+function displayCloset(){
+  const list = $('myClosetList'); list.innerHTML='';
   clothes.forEach((c,i)=>{
-    const card=document.createElement('div');
-    card.className='card';
-    const overused = (c.worn||0) >=5;
-    card.style.opacity= overused?0.6:1;
-    card.innerHTML=`
-      ${c.img?'<img src="'+c.img+'">':''}
-      <strong>${c.name}</strong> - ${c.color||''} - ${c.type||''}<br>
-      Style: ${c.style||''}<br>Occasion: ${c.occasion||''}<br>
-      Worn: ${c.worn||0} times
-      <br><button onclick="removeClothes(${i})">Remove</button>
-    `;
-    $('myClosetList').appendChild(card);
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML=`${c.img?'<img src="'+c.img+'">':''}<strong>${c.name}</strong><br>
+    Type: ${c.type}<br>Color: ${c.color}<br>Style: ${c.style}<br>Occasion: ${c.occasion}<br>
+    Times Worn: ${c.worn||0}<br><button onclick="removeClothes(${i})">Remove</button>`;
+    list.appendChild(card);
   });
   $('closetCounter').textContent=`Total items: ${clothes.length}`;
 }
+window.removeClothes=i=>{ clothes.splice(i,1); localStorage.setItem(CLOTHES_KEY,JSON.stringify(clothes)); displayCloset(); generateFit(); };
 
-// Remove item
-function removeClothes(i){
-  clothes.splice(i,1);
-  localStorage.setItem(CLOTHES_KEY, JSON.stringify(clothes));
-  displayMyCloset();
+// Image processing & detection
+async function processImage(file, maxWidth=500){
+  return new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        const scale=Math.min(1,maxWidth/img.width);
+        canvas.width=img.width*scale;
+        canvas.height=img.height*scale;
+        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL('image/jpeg',0.8));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
-// Add item
-$('saveClothes').addEventListener('click',()=>{
-  const img = $('clothesImage').files[0];
-  const name = $('clothesName').value.trim();
-  if(!name){ alert('Enter item name'); return; }
-  if(selectedStyles.length===0){ alert('Select at least one style'); return; }
-  if(selectedOccasions.length===0){ alert('Select at least one occasion'); return; }
+let mobilenetModel=null;
+async function detectClothingType(imgDataURL){
+  if(!mobilenetModel) mobilenetModel = await mobilenet.load();
+  if(!imgDataURL) return 'Unknown';
+  const img = new Image(); img.src=imgDataURL; await new Promise(r=>img.onload=r);
+  const predictions = await mobilenetModel.classify(img);
+  const topPrediction = predictions[0]?.className.toLowerCase() || '';
+  if(topPrediction.includes('hoodie')) return 'Hoodie';
+  if(topPrediction.includes('t-shirt') || topPrediction.includes('shirt')) return 'T-shirt';
+  if(topPrediction.includes('sweater')) return 'Sweater';
+  if(topPrediction.includes('jacket')) return 'Jacket';
+  if(topPrediction.includes('tank')) return 'Tank';
+  if(topPrediction.includes('sneaker') || topPrediction.includes('shoe')) return 'Sneakers';
+  if(topPrediction.includes('boot')) return 'Boots';
+  if(topPrediction.includes('sandals')) return 'Sandals';
+  if(topPrediction.includes('pants') || topPrediction.includes('jeans') || img.height/img.width>1.3) return 'Jeans';
+  if(topPrediction.includes('shorts')) return 'Shorts';
+  return 'Unknown';
+}
 
-  const reader = new FileReader();
-  reader.onload=function(e){
-    const newItem={
-      img:e.target.result, name,
-      style:selectedStyles.join(','), occasion:selectedOccasions.join(','),
-      type:'top', color:'', worn:0
-    };
-    clothes.push(newItem);
-    localStorage.setItem(CLOTHES_KEY, JSON.stringify(clothes));
-    displayMyCloset();
-    $('clothesName').value=''; $('clothesImage').value='';
-    selectedStyles=[]; selectedOccasions=[];
-    document.querySelectorAll('#styleButtons button, #occasionButtons button').forEach(b=>b.classList.remove('active'));
-    generateFit();
-  }
-  if(img) reader.readAsDataURL(img);
+async function detectDominantColor(imgDataURL){
+  const img=new Image(); img.src=imgDataURL; await new Promise(r=>img.onload=r);
+  const canvas=document.createElement('canvas'); canvas.width=img.width; canvas.height=img.height;
+  const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,img.width,img.height);
+  const data=ctx.getImageData(0,0,img.width,img.height).data;
+  let r=0,g=0,b=0,count=0;
+  for(let i=0;i<data.length;i+=4){ r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++; }
+  r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count);
+  return `rgb(${r},${g},${b})`;
+}
+
+function suggestStyle(type){
+  type = type.toLowerCase();
+  let style='Casual', occasion='Everyday';
+  if(['hoodie','t-shirt','tank','sweater','jacket'].includes(type)) style='Casual';
+  if(['jeans','baggy pants','leggings','shorts'].includes(type)) style='Street';
+  if(['sneakers','boots','sandals'].includes(type)) style='Footwear';
+  if(['hoodie','jacket'].includes(type)) occasion='Cold Weather';
+  return {style, occasion};
+}
+
+// Upload form
+$('uploadForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const file=$('clothesImage').files[0];
+  const name=$('clothesName').value.trim();
+  if(!file||!name){ alert('Select image and enter name'); return; }
+  const imgData = await processImage(file);
+  const type = await detectClothingType(imgData);
+  const color = await detectDominantColor(imgData);
+  const {style, occasion} = suggestStyle(type);
+  clothes.push({img:imgData,name,type,color,style,occasion,worn:0});
+  localStorage.setItem(CLOTHES_KEY,JSON.stringify(clothes));
+  displayCloset();
+  generateFit();
+  $('uploadForm').reset();
 });
 
-// Fit Generator
-function colorDistance(c1,c2){ // simple Euclidean for RGB
-  const rgb1=c1.match(/\d+/g)?.map(Number)||[0,0,0];
-  const rgb2=c2.match(/\d+/g)?.map(Number)||[0,0,0];
-  return Math.sqrt((rgb1[0]-rgb2[0])**2+(rgb1[1]-rgb2[1])**2+(rgb1[2]-rgb2[2])**2);
-}
-
+// Fit generator
 function generateFit(){
-  const tops = clothes.filter(c=>c.type==='top');
-  const bottoms = clothes.filter(c=>c.type==='bottom');
-  const shoes = clothes.filter(c=>c.type==='shoes');
-  if(!tops.length || !bottoms.length || !shoes.length){
-    $('fitResult').innerHTML='<p>Add tops, bottoms, and shoes for fit.</p>';
-    return;
-  }
+  if(clothes.length<5){ $('fitResult').innerHTML='<p>Add more clothes to generate outfits.</p>'; return; }
+  const tops = clothes.filter(c=>['Hoodie','T-shirt','Sweater','Jacket','Tank'].includes(c.type));
+  const bottoms = clothes.filter(c=>['Jeans','Shorts','Leggings','Baggy Pants'].includes(c.type));
+  const shoes = clothes.filter(c=>['Sneakers','Boots','Sandals'].includes(c.type));
+  if(!tops.length || !bottoms.length || !shoes.length){ $('fitResult').innerHTML='<p>Upload at least one top, bottom, and shoes.</p>'; return; }
 
-  function scoreItem(item){
-    let score= Math.max(0,5-(item.worn||0));
-    selectedStyles.forEach(s=>{ if(item.style?.includes(s)) score+=3; });
-    selectedOccasions.forEach(o=>{ if(item.occasion?.includes(o)) score+=2; });
-    return score;
-  }
+  const outfitTop = tops[Math.floor(Math.random()*tops.length)];
+  const outfitBottom = bottoms[Math.floor(Math.random()*bottoms.length)];
+  const outfitShoes = shoes[Math.floor(Math.random()*shoes.length)];
 
-  const scoredTops = tops.map(t=>({...t, score:scoreItem(t)})).sort((a,b)=>b.score-a.score);
-  const scoredBottoms = bottoms.map(b=>({...b, score:scoreItem(b)})).sort((a,b)=>b.score-a.score);
-  const scoredShoes = shoes.map(s=>({...s, score:scoreItem(s)})).sort((a,b)=>b.score-a.score);
+  outfitTop.worn=(outfitTop.worn||0)+1;
+  outfitBottom.worn=(outfitBottom.worn||0)+1;
+  outfitShoes.worn=(outfitShoes.worn||0)+1;
+  localStorage.setItem(CLOTHES_KEY,JSON.stringify(clothes));
 
-  const chosenTop = scoredTops[Math.floor(Math.random()*Math.min(2,scoredTops.length))];
-  const chosenBottom = scoredBottoms[Math.floor(Math.random()*Math.min(2,scoredBottoms.length))];
-  const chosenShoe = scoredShoes[Math.floor(Math.random()*Math.min(2,scoredShoes.length))];
-
-  [chosenTop,chosenBottom,chosenShoe].forEach(i=>i.worn=(i.worn||0)+1);
-  localStorage.setItem(CLOTHES_KEY, JSON.stringify(clothes));
-
-  $('fitResult').innerHTML=`<div class="card">
-    ${chosenTop.img?'<img src="'+chosenTop.img+'">':''}<strong>${chosenTop.name}</strong><br>
-    ${chosenBottom.img?'<img src="'+chosenBottom.img+'">':''}<strong>${chosenBottom.name}</strong><br>
-    ${chosenShoe.img?'<img src="'+chosenShoe.img+'">':''}<strong>${chosenShoe.name}</strong>
+  $('fitResult').innerHTML = `<div class="card">
+    ${outfitTop.img?'<img src="'+outfitTop.img+'">':''}<strong>Top:</strong> ${outfitTop.name}<br>
+    ${outfitBottom.img?'<img src="'+outfitBottom.img+'">':''}<strong>Bottom:</strong> ${outfitBottom.name}<br>
+    ${outfitShoes.img?'<img src="'+outfitShoes.img+'">':''}<strong>Shoes:</strong> ${outfitShoes.name}<br>
+    <strong>Style:</strong> ${outfitTop.style} | <strong>Occasion:</strong> ${outfitTop.occasion}
   </div>`;
-  displayMyCloset();
 }
 
 $('rerollFit').addEventListener('click', generateFit);
 
-// Weekly wash reminder
-if(!localStorage.getItem('lastWash')){
-  localStorage.setItem('lastWash', Date.now());
-}else{
-  const last = parseInt(localStorage.getItem('lastWash'));
-  const now = Date.now();
-  if(now - last > 7*24*60*60*1000) alert('Reminder: Wash your clothes this week!');
-}
-
-// Initial load
-displayMyCloset();
-generateFit();
+// Initialize
+displayCloset(); generateFit();
 </script>
 
 </body>
